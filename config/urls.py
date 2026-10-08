@@ -16,7 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from config import settings
+from home.views import *
+from home.templates import *
+from recipe.views import delete_recipe, recipe_list
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
+    path('', home, name = "home"),
+    path('contact/', contact, name = "contact"), 
+    path('about/', about, name = "about"), 
+    path('recipe/', recipe_list, name = "recipe-list"),
     path('admin/', admin.site.urls),
+    path('delete-recipe/<int:recipe_id>/', delete_recipe, name='delete-recipe'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
+urlpatterns += staticfiles_urlpatterns()
